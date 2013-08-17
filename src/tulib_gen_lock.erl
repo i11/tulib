@@ -211,12 +211,13 @@ down_test() ->
 
 cover_test() ->
   {ok, Pid} = start(locker1),
-  {ok, _}   = start_link(locker2),
+  {ok, Pid2}   = start_link(locker2),
   {ok, _}   = start_link(),
   {ok, bar} = code_change(foo, bar, baz),
   gen_server:cast(Pid, msg),
   locker2 ! msg,
   timer:sleep(100),
+  ok = stop(Pid2),
   ok.
 
 -endif.
